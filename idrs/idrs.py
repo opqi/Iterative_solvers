@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.linalg import get_blas_funcs
+from utils import orth
 from scipy.sparse.linalg.isolve.utils import make_system
 
 
@@ -12,12 +12,6 @@ def idrs(A, b, x0=None, tol=1e-5, norm=np.linalg.norm, s=4, maxiter=None,callbac
     .. [2] M. B. van Gijzen and P. Sonneveld
              ACM Trans. Math. Software,, Vol. 38, No. 1, pp. 5:1-5:19, (2011).
     """
-
-    def orth(A):
-        u, s, vh = np.linalg.svd(A, full_matrices=False)
-        M, N = A.shape
-        Q = u[:,:N]
-        return Q
 
     dtype = A.dtype
     A,_,x,b,postprocess = make_system(A,None,x0,b)

@@ -12,7 +12,7 @@ def biconjugate_gradient(A, b, x0=None, tol=1e-5, norm=np.linalg.norm, maxiter=N
     else:
         x = x0
 
-    #A = scsp.coo_matrix(A)   
+    A = scsp.coo_matrix(A)   
     
     if maxiter is None:
         maxiter = n*10

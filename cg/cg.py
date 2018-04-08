@@ -1,9 +1,8 @@
 import numpy as np
-from utils import orth
 from scipy.sparse.linalg.isolve.utils import make_system
 
 
-def cg(A, b, x0=None, tol=1e-5, norm=np.linalg.norm, maxiter=None,callback=None,init_seed=None):
+def conjugate_gradient(A, b, x0=None, tol=1e-5, norm=np.linalg.norm, maxiter=None,callback=None,init_seed=None):
 
     dtype = A.dtype
     A,B,x,b,postprocess = make_system(A,None,x0,b)
@@ -14,29 +13,32 @@ def cg(A, b, x0=None, tol=1e-5, norm=np.linalg.norm, maxiter=None,callback=None,
 
     r = b - A.dot(x)
     rnrm = norm(r)
-    p = r
+    p = r.copy()
 
     if callback is not None:
         callback(x)
 
     tolr = tol*norm(b)
     if rnrm < tolr:
-        return postprocess(x)
+        return postprocess(x)[:,None]
 
     for i in range(maxiter):
-        y = r.T.dot(r)
-        z = A.dot(p)
-        alpha = y/(z.T.dot(p))
+        r_norm = r.T.dot(r)
+
+        Ap = A.dot(p)
+        alpha = r_norm / p.T.dot(Ap)
         x += alpha*p
         
         if callback is not None:
             callback(x)
         
-        r -= alpha*z
+        r -= alpha*Ap
         rnrm = norm(r)
         if rnrm < tolr:
             break
 
-        p =  r + r.T.dot(r)/y * p
+        beta = r.T.dot(r)
+        p =  r + p*(beta/r_norm)
+        
+    return postprocess(x)[:,None]
 
-    return postprocess(x)

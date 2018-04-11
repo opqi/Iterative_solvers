@@ -8,7 +8,7 @@ def biconjugate_gradient_stab(A, b, x0=None, tol=1e-5, norm=np.linalg.norm, maxi
     n = len(b)
 
     if x0 is None:
-        x = np.zeros((n,1),dtype=dtype)
+        x = np.zeros(n,dtype=dtype)
     else:
         x = x0
 

@@ -1,5 +1,5 @@
 import numpy as np
-from utils import orth
+from .utils import orth
 from scipy.sparse.linalg.isolve.utils import make_system
 
 

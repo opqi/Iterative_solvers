@@ -70,7 +70,7 @@ def idrs_biortho(A, b, x0=None, tol=1e-5, norm=np.linalg.norm, s=2, maxiter=None
 
     tolr = tol*norm(b)
     if rnrm < tolr:
-        return np.array([info, rnrm/r_start, norm(b-A.dot(x))/rnrm, 0],dtype=float), np.asarray(pt_r)#postprocess(x)
+        return postprocess(x)
 
     dR = np.zeros((n, s), dtype=dtype)
     dX = np.zeros((n, s), dtype=dtype)

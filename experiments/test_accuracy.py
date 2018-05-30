@@ -17,7 +17,7 @@ rand = np.random.RandomState(RANDOM_SEED)
 
 
 M_Kryl = 10000
-TOL = 1e-15
+TOL = 1e-10
 NORM = np.linalg.norm
 
 def gen_mat(path):
@@ -27,7 +27,7 @@ def gen_mat(path):
 	return A,b,X_true
 
 
-A,b,x_true = gen_mat('matricies\\saylr4.mtx')
+A,b,x_true = gen_mat('matricies/add32.mtx')
 #jpwh_991.mtx
 #add32.mtx
 
@@ -87,8 +87,8 @@ if __name__ == '__main__':
                test_bcg,
                test_bcg_stab_1,
                test_bcg_stab_2,
-               test_idrs,
-               test_idr_s2,
+               #test_idrs,
+               #test_idr_s2,
                test_idrs_biortho,
                test_idrs_biorthov2]:
 		res = []

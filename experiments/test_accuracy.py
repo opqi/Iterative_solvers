@@ -17,7 +17,7 @@ rand = np.random.RandomState(RANDOM_SEED)
 
 
 M_Kryl = 10000
-TOL = 1e-10
+TOL = 1e-15
 NORM = np.linalg.norm
 
 def gen_mat(path):

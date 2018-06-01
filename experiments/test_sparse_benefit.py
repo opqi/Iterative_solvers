@@ -6,7 +6,7 @@ RANDOM_SEED = 42
 rand = np.random.RandomState(RANDOM_SEED)
 
 
-A = scio.mmread('matricies\\jpwh_991.mtx')
+A = scio.mmread('matricies/jpwh_991.mtx')
 X_true = np.random.rand(A.shape[0])
 b = A.dot(X_true)
 

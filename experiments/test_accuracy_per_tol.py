@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import scipy.io as scio
 import scipy.sparse as scsp
@@ -14,7 +15,7 @@ RANDOM_SEED = 42
 rand = np.random.RandomState(RANDOM_SEED)
 
 
-M_Kryl = 10000
+M_Kryl = 5000
 NORM = np.linalg.norm
 
 def gen_mat(path):
@@ -68,10 +69,10 @@ def test_idrs_biorthov2(tol):
 	return "IDR(s)BiOrthov2", res
 
 if __name__ == '__main__':
-	TOL = np.logspace(-1,-15,num=30)
+	TOL = np.logspace(-1,-15,num=35)
 
-	for f in [#test_spsolve,
-				#test_gmres,
+	for itr,f in enumerate([#test_spsolve,
+				test_gmres,
 				test_cg,
 				test_bcg,
 				test_bcg_stab_1,
@@ -79,11 +80,24 @@ if __name__ == '__main__':
 				#test_idrs,
 				#test_idr_s2,
 				test_idrs_biortho,
-				test_idrs_biorthov2]:
-
+				test_idrs_biorthov2]):
+		print("Now tested iter #", itr)
 		res = []
+		times = []
 		for tol in TOL:
-			name, x = f(tol)		
-			res.append(NORM(x_true-np.ravel(x)))
+			print("\tTOL ", tol)
+			r_, t_ = [], []
+			for i in range(10):
+				t0 = time.time()
+				name, x = f(tol)
+				t1 = time.time()
+				r_.append(NORM(x_true-np.ravel(x))),
+				t_.append(t1-t0)
+				if t_[-1]>60.0 and i>0:
+					break
+			res.append(np.mean(r_))
+			times.append(np.mean(t_))
 		with open("results/{}.acc".format(name),"w") as f:
 			f.write("\n".join(map(str,res)))
+		with open("results/{}.time".format(name),"w") as f:
+			f.write("\n".join(map(str,times)))
